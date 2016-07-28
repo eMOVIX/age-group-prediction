@@ -2,6 +2,13 @@
 Age Group Prediction for Catalan Twitter users based on their following list.
 
 
+## Step 0
+
+Filter the "ca_twitterStatus" collection:
+
+    {"language_detections.language": "ca", "language_detections.isReliable": true}
+
+
 ## Step 1
 
 Source TSV file ("ca_twitterStatus.tsv"): https://figshare.com/s/d53c14092b5603e7f091
