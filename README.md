@@ -23,8 +23,9 @@ library(dplyr)
 library(exploratory)
 
 # Data Analysis Steps
-read_delim("ca_twitterStatus.tsv" , "\t", quote = "\"", skip = 0 , col_names = TRUE , na = c("","NA"), n_max=-1 , locale=locale(encoding = "UTF-8", decimal_mark = ".") , progress = FALSE) %>%
+read_delim("/Users/jordi/ca_twitterStatus.tsv" , "\t", quote = "\"", skip = 0 , col_names = TRUE , na = c("","NA"), n_max=-1 , locale=locale(encoding = "UTF-8", decimal_mark = ".") , progress = FALSE) %>%
   exploratory::clean_data_frame() %>%
   filter(user.lang == "ca") %>%
-  distinct(user.screen_name)
+  distinct(user.screen_name) %>%
+  arrange(user.screen_name)
 ```
