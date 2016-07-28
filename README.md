@@ -6,8 +6,9 @@ Age Group Prediction for Catalan Twitter users based on their following list.
 
 Filter the "ca_twitterStatus" collection:
 
-    {"language_detections.language": "ca", "language_detections.isReliable": true}
-
+```
+db.ca_twitterStatus.find({"language_detections.language": "ca", "language_detections.isReliable": true}, {_id: 0, id: 1, created_at: 1, timestamp_ms: 1, text: 1, "coordinates.0": 1, "coordinates.1": 1, "place.full_name": 1, "place.name": 1, "user.id": 1, "user.lang":1, "user.screen_name": 1, "user.friends_count": 1, "user.followers_count": 1, "user.location": 1, "user.source": 1})
+```
 
 ## Step 1
 
