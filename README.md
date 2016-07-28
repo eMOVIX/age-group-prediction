@@ -29,3 +29,5 @@ read_delim("/Users/jordi/ca_twitterStatus.tsv" , "\t", quote = "\"", skip = 0 , 
   distinct(user.screen_name) %>%
   arrange(user.screen_name)
 ```
+
+Catalan Users ("ca_users.csv"): https://figshare.com/s/d8dc6bed26fc5f0d34d0
