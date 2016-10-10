@@ -6,8 +6,8 @@ __author__ = 'Jordi Vilaplana'
 import tweepy
 import json
 import logging
-import time
-import datetime
+from time import sleep
+from random import randint
 
 logging.basicConfig(filename='emovix_twitter_search.log',level=logging.INFO)
 
@@ -59,6 +59,7 @@ if __name__ == '__main__':
                 print "Sending DM to " + user.screen_name
                 api.send_direct_message(screen_name=user.screen_name, text=u"Hola @" + user.screen_name + u", des del projecte #eMOVIX estem fent un estudi dels usuaris Catalans a Twitter, podries respondre aquesta pregunta anònima sobre la teva edat? Moltes gràcies: http://emovix.udl.cat/main/twitterSurveyLink/" + user.screen_name)
                 file_users_survey_link_sent.write(user.screen_name + '\n')
+                sleep(randint(1, 3))
             except tweepy.error.TweepError as e:
                 print "[ERROR] Could not send DM to user " + user.screen_name
                 print e

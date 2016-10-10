@@ -6,8 +6,8 @@ __author__ = 'Jordi Vilaplana'
 import tweepy
 import json
 import logging
-import time
-import datetime
+from time import sleep
+from random import randint
 import csv
 
 logging.basicConfig(filename='emovix_twitter_search.log',level=logging.INFO)
@@ -46,7 +46,6 @@ if __name__ == '__main__':
         f.close()
 
     with open('data/cat_users_raw_select_to_send.csv') as input, open('data/cat_users_sent.csv', 'a') as out:
-    #with open('data/cat_users_raw_select_3_to_send.csv') as input, open('data/cat_users_sent.csv', 'wb') as out:
         writer = csv.writer(out)
         for line in input:
             username = line.strip()
@@ -54,7 +53,21 @@ if __name__ == '__main__':
                 try:
                     api.create_friendship(username)
                     out.write(username + '\n')
+                    print "Now following: " + username
+                    sleep(randint(1, 3))
                 except tweepy.error.TweepError as e:
                     print "[ERROR] Unable to follow user: " + username
                     print e
+                    if e.api_code == 226 or e.api_code == 89:
+                        print "Twitter is getting mad at us, let's stop it for now."
+                        break
+                    elif e.api_code == 160:
+                        print "\tUser " + username + " has already been asked."
+                        out.write(username + '\n')
+                    elif e.api_code == 108:
+                        print "\tUser " + username + " no longer exists."
+                        out.write(username + '\n')
+                    elif e.api_code == 161:
+                        print "Twitter is getting tired, let's take a break."
+                        break
                     continue
