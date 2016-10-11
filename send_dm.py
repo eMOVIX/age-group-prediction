@@ -53,13 +53,18 @@ if __name__ == '__main__':
 
     file_users_survey_link_sent = open('data/users_survey_link_sent.txt', 'a')
 
+    counter = 0
     for user in tweepy.Cursor(api.followers, screen_name="e_movix").items():
+        if counter > 7:
+            print "7 consecutive requests, let's not test our luck and stop here."
+            break
         if user.screen_name in users_to_send and user.screen_name not in users_survey_link_sent:
             try:
                 print "Sending DM to " + user.screen_name
                 api.send_direct_message(screen_name=user.screen_name, text=u"Hola @" + user.screen_name + u", des del projecte #eMOVIX estem fent un estudi dels usuaris Catalans a Twitter, podries respondre aquesta pregunta anònima sobre la teva edat? Moltes gràcies: http://emovix.udl.cat/main/twitterSurveyLink/" + user.screen_name)
                 file_users_survey_link_sent.write(user.screen_name + '\n')
-                sleep(randint(1, 3))
+                counter += 1
+                sleep(randint(1, 5))
             except tweepy.error.TweepError as e:
                 print "[ERROR] Could not send DM to user " + user.screen_name
                 print e
