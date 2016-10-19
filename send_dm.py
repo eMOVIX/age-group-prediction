@@ -68,6 +68,9 @@ if __name__ == '__main__':
             except tweepy.error.TweepError as e:
                 print "[ERROR] Could not send DM to user " + user.screen_name
                 print e
+                if e.api_code == 226 or e.api_code == 89:
+                    print "Twitter is getting mad at us, let's stop it for now."
+                    break
                 continue
 
     file_users_survey_link_sent.close()
