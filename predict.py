@@ -44,7 +44,7 @@ def predict():
         for age_group in age_group_buffer:
             print "Working with the user @" + age_group['username']
 
-            user_predicted = db['age_group_predicted'].find({"username": age_group['username']})
+            user_predicted = db['age_group_predicted'].find_one({"username": age_group['username']})
 
             if user_predicted:
                 print "User @" + age_group['username'] + " has already been predicted, skipping ..."
