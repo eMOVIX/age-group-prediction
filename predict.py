@@ -6,7 +6,7 @@ __author__ = 'Jordi Vilaplana'
 import tweepy
 import json
 from pymongo import MongoClient
-
+from time import sleep
 
 # Configuration parameters
 database_host = ""
@@ -20,28 +20,7 @@ consumer_secret = ""
 client = None
 db = None
 
-if __name__ == '__main__':
-
-    # Load configuration
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-        database_host = config['database_host']
-        database_name = config['database_name']
-        database_collection = config['database_collection']
-        access_token = config['access_token']
-        access_token_secret = config['access_token_secret']
-        consumer_key = config['consumer_key']
-        consumer_secret = config['consumer_secret']
-
-    # Connect to the MongoDB database
-    client = MongoClient('mongodb://' + database_host + ':27017/')
-    db = client[database_name]
-
-    # Connect to the Twitter API
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-
+def predict():
     age_group_buffer = db['age_group_buffer'].find()
 
     twitterUserAgeGroup = db['twitterUserAgeGroup'].find({"following": {"$exists": True}})
@@ -61,7 +40,6 @@ if __name__ == '__main__':
         elif twitter_user['ageGroup'] == 4:
             age_group_4.extend(twitter_user['following'])
 
-    print "Let's do this, we got " + str(age_group_buffer.count()) + " users to chew!"
     if age_group_buffer:
         for age_group in age_group_buffer:
             print "Working with the user @" + age_group['username']
@@ -109,7 +87,30 @@ if __name__ == '__main__':
                 predicted['certain'] = False
 
             db['age_group_predicted'].insert(predicted)
-
             db['age_group_buffer'].remove({"_id": age_group['_id']})
 
-    print "We are done, bye!"
+
+if __name__ == '__main__':
+    # Load configuration
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+        database_host = config['database_host']
+        database_name = config['database_name']
+        database_collection = config['database_collection']
+        access_token = config['access_token']
+        access_token_secret = config['access_token_secret']
+        consumer_key = config['consumer_key']
+        consumer_secret = config['consumer_secret']
+
+    # Connect to the MongoDB database
+    client = MongoClient('mongodb://' + database_host + ':27017/')
+    db = client[database_name]
+
+    # Connect to the Twitter API
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
+    while 1:
+        predict()
+        sleep(5)
