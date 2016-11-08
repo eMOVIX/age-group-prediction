@@ -1,6 +1,26 @@
 # age-group-prediction
 Age Group Prediction for Catalan Twitter users based on their following list.
 
+## Prerequisites
+
+ - Python 2.7
+ - git
+ - pip
+ - virtualenv
+
+## Installation
+
+    git clone https://github.com/eMOVIX/age-group-prediction.git
+    cd age-group-prediction
+    virtualenv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+
+## Configuration
+
+Add your database configuration to the configuration file:
+
+    vim config.json
 
 ## Step 0
 
