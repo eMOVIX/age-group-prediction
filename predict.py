@@ -43,6 +43,14 @@ def predict():
     if age_group_buffer:
         for age_group in age_group_buffer:
             print "Working with the user @" + age_group['username']
+
+            user_predicted = db['age_group_predicted'].find({"username": age_group['username']})
+
+            if user_predicted:
+                print "User @" + age_group['username'] + " has already been predicted, skipping ..."
+                db['age_group_buffer'].remove({"_id": age_group['_id']})
+                continue
+
             friends_ids = []
             for page in tweepy.Cursor(api.followers_ids, screen_name=age_group['username']).pages():
                 friends_ids.extend(page)
