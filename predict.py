@@ -7,6 +7,7 @@ import tweepy
 import json
 from pymongo import MongoClient
 from time import sleep
+import operator
 
 # Configuration parameters
 database_host = ""
@@ -95,9 +96,11 @@ def predict():
             n_score_3 = score_3 / total_score
             n_score_4 = score_4 / total_score
 
-            d = {'1': n_score_1, '2': n_score_2, '3': n_score_3, '4': n_score_4}
+            d = {1: score_1, 2: score_2, 3: score_3, 4: score_4}
 
-            predicted['group'] = max(d, key=d.get)
+            predicted['group'] = max(d.iteritems(), key=operator.itemgetter(1))[0]
+            print "PREDICTED ::: "
+            print predicted['group']
             predicted['n_score'] = max(d)
             if max(d) > 50:
                 predicted['certain'] = True
