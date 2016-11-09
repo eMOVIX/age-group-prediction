@@ -52,8 +52,20 @@ def predict():
                 continue
 
             friends_ids = []
-            for page in tweepy.Cursor(api.followers_ids, screen_name=age_group['username']).pages():
-                friends_ids.extend(page)
+
+            predicted = {}
+            predicted['username'] = age_group['username']
+
+            try:
+                for page in tweepy.Cursor(api.followers_ids, screen_name=age_group['username']).pages():
+                    friends_ids.extend(page)
+            except tweepy.error.TweepError as e:
+                if e.api_code == 34:
+                    print "User " + age_group['username'] + " is not a valid Twitter user, skipping ..."
+                    predicted['error'] = e.api_code
+                    db['age_group_predicted'].insert(predicted)
+                    db['age_group_buffer'].remove({"_id": age_group['_id']})
+                    continue
 
             score_1 = 0
             score_2 = 0
@@ -70,8 +82,6 @@ def predict():
                 elif friend in age_group_4:
                     score_4 += 1
 
-            predicted = {}
-            predicted['username'] = age_group['username']
             predicted['score_1'] = score_1
             predicted['score_2'] = score_2
             predicted['score_3'] = score_3
