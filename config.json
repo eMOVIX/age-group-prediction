@@ -1,9 +1,9 @@
 {
-  "access_token": "3172424764-a9JzaCZuTdSb8cVyTeq9KxrFum4BIKvFZHZ52tr",
-  "access_token_secret": "0e6tCJoIT6FDdmGjPulct2B79M2in1cHimOny9JjkJs49",
-  "consumer_key": "833x5CX5FxvahRDgEcuiWqKSt",
-  "consumer_secret": "0hciBuYhGGRnnIVgt68J3rfoxXLWU11DtDMnH0j6TBhzQNVDQv",
-  "database_host": "192.168.101.12",
-  "database_name": "emovix",
-  "database_collection": "twitterUserAgeGroup"
+  "access_token": "",
+  "access_token_secret": "",
+  "consumer_key": "",
+  "consumer_secret": "",
+  "database_host": "",
+  "database_name": "",
+  "database_collection": ""
 }
